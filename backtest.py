@@ -45,7 +45,8 @@ def read_single_data(ticker, path_to_data, start_date, end_date, selected_cols):
     return dataset
 
 
-def warmup(tickers, path_to_data, start_date, end_date, selected_cols):
+def warmup(tickers, path_to_data, start_date, end_date, 
+           selected_cols, logging=False):
     '''
     Считывает данные по указаным тикерам и формирует датасет
     -------------------------------
@@ -58,7 +59,8 @@ def warmup(tickers, path_to_data, start_date, end_date, selected_cols):
     dfs = []
     for ticker in tickers:
         df = read_single_data(ticker, path_to_data, start_date, end_date, selected_cols)
-        print(ticker, df.shape)
+        if logging:
+            print(ticker, df.shape)
         df.index = df.index.to_series().apply(lambda x: str(x.date()))
         df = {key: {ticker: value} for key, value in df.to_dict('index').items()}
         dfs.append(df.copy())
